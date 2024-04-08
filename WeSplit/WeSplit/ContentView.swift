@@ -11,6 +11,9 @@ struct ContentView: View {
     @State private var tapCount = 0
     @State private var name = ""
     
+    private let nameList = ["Harry", "Allen", "Ron"]
+    @State private var selectedName = "Allen"
+    
     var body: some View {
         NavigationStack {
             Form {
@@ -24,12 +27,17 @@ struct ContentView: View {
                 }
 
                 Section("Section two") {
-                    Text("Hello World")
-                    Text("Hello World")
-                    Text("Hello World")
-                    Text("Hello World")
-                    Text("Hello World")
-                    Text("Hello World")
+                    ForEach(0..<10) { num in
+                        Text("This is row \(num+1)")
+                    }
+                }
+                
+                Section("Section picker") {
+                    Picker("Select user", selection: $selectedName) {
+                        ForEach(nameList, id: \.self) {
+                            Text("User \($0)")
+                        }
+                    }
                 }
             }
             .navigationTitle("SwiftUI")
