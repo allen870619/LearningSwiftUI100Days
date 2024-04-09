@@ -23,9 +23,16 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section("Input Tips") {
+                Section("Input") {
                     TextField("Amount", value: $checkAmount, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
                         .keyboardType(.decimalPad)
+                    
+                    Picker("Number of people", selection: $numberOfPeople) {
+                        ForEach(2..<200) {
+                            Text("\($0) people")
+                        }
+                    }
+                    .pickerStyle(.navigationLink) // must use with navigationStack
                 }
                 
                 Section("Present Tips") {
@@ -56,8 +63,8 @@ struct ContentView: View {
                 }
                 
             }
-            .navigationTitle("SwiftUI")
-            .navigationBarTitleDisplayMode(.inline)
+            .navigationTitle("WeSplit")
+            .navigationBarTitleDisplayMode(.automatic)
         }
     }
 }
