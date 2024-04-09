@@ -14,9 +14,24 @@ struct ContentView: View {
     private let nameList = ["Harry", "Allen", "Ron"]
     @State private var selectedName = "Allen"
     
+    @State private var checkAmount = 0.0
+    @State private var numberOfPeople = 2
+    @State private var tipPercentage = 20
+    
+    let tipPercentages = [10, 15, 20, 25]
+    
     var body: some View {
         NavigationStack {
             Form {
+                Section("Input Tips") {
+                    TextField("Amount", value: $checkAmount, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
+                        .keyboardType(.decimalPad)
+                }
+                
+                Section("Present Tips") {
+                    Text(checkAmount, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
+                }
+                
                 Section("Section one") {
                     Button("Tap Count: \(tapCount)") {
                         tapCount += 1
@@ -39,6 +54,7 @@ struct ContentView: View {
                         }
                     }
                 }
+                
             }
             .navigationTitle("SwiftUI")
             .navigationBarTitleDisplayMode(.inline)
