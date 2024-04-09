@@ -25,12 +25,15 @@ struct ContentView: View {
         return grandTotal / Double(numberOfPeople + 2)
     }
     
+    @FocusState private var amountIsFocused: Bool
+    
     var body: some View {
         NavigationStack {
             Form {
                 Section("Input") {
                     TextField("Amount", value: $checkAmount, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
                         .keyboardType(.decimalPad)
+                        .focused($amountIsFocused)
                     
                     Picker("Number of people", selection: $numberOfPeople) {
                         ForEach(2..<200) {
@@ -77,6 +80,13 @@ struct ContentView: View {
             }
             .navigationTitle("WeSplit")
             .navigationBarTitleDisplayMode(.automatic)
+            .toolbar(content: {
+                if amountIsFocused {
+                    Button("Done") {
+                        amountIsFocused = false
+                    }
+                }
+            })
         }
     }
 }
