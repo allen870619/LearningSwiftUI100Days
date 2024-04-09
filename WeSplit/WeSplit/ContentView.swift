@@ -19,6 +19,11 @@ struct ContentView: View {
     @State private var tipPercentage = 20
     
     let tipPercentages = [10, 15, 20, 25]
+    var totalPerPerson: Double {
+        let tips = checkAmount / 100 * Double(tipPercentage)
+        let grandTotal = checkAmount + tips
+        return grandTotal / Double(numberOfPeople + 2)
+    }
     
     var body: some View {
         NavigationStack {
@@ -42,8 +47,8 @@ struct ContentView: View {
                     .pickerStyle(.segmented)
                 }
                 
-                Section("Present Tips") {
-                    Text(checkAmount, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
+                Section("Total per person") {
+                    Text(totalPerPerson, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
                 }
                 
                 Section("Section one") {
