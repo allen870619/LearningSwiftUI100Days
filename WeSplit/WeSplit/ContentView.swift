@@ -33,6 +33,13 @@ struct ContentView: View {
                         }
                     }
                     .pickerStyle(.navigationLink) // must use with navigationStack
+                    
+                    Picker("Tip percentage", selection: $tipPercentage) {
+                        ForEach(tipPercentages, id: \.self) {
+                            Text($0, format: .percent)
+                        }
+                    }
+                    .pickerStyle(.segmented)
                 }
                 
                 Section("Present Tips") {
