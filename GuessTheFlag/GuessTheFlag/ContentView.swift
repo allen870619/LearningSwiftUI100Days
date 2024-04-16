@@ -8,8 +8,11 @@
 import SwiftUI
 
 struct ContentView: View {
-    var countries = ["Estonia", "France", "Germany", "Ireland", "Italy", "Nigeria", "Poland", "Spain", "UK", "Ukraine", "US"]
+    var countries = ["Estonia", "France", "Germany", "Ireland", "Italy", "Nigeria", "Poland", "Spain", "UK", "Ukraine", "US"].shuffled()
     var correctAnswer = Int.random(in: 0...2)
+    
+    @State private var showingScore = false
+    @State private var scoreTitle = ""
     
     var body: some View {
         ZStack {
@@ -24,36 +27,46 @@ struct ContentView: View {
                 
                 ForEach(0..<3) { num in
                     Button {
-                        // action
+                        flagTapped(num)
                     } label: {
                         Image(countries[num])
                     }
                 }
             }
         }
-        
-        
-//        VStack(alignment: .leading, spacing: 20) {
-//            Text("Hello, world!")
-//            Color.green
-//                .frame(width: 200, height: 200)
-//            Text("This is another text view")
-//                .background(.blue)
-//            ZStack {
-//                VStack(spacing: 0) {
-//                    Color.red
-//                    Color.blue
-//                }
-//
-//                Text("Your content")
-//                    .foregroundStyle(.secondary)
-//                    .padding(50)
-//                    .background(.ultraThinMaterial)
-//            }
-//        }
-//        .background(.red)
-//        .padding()
-//        .ignoresSafeArea()
+    }
+    
+    
+    //        VStack(alignment: .leading, spacing: 20) {
+    //            Text("Hello, world!")
+    //            Color.green
+    //                .frame(width: 200, height: 200)
+    //            Text("This is another text view")
+    //                .background(.blue)
+    //            ZStack {
+    //                VStack(spacing: 0) {
+    //                    Color.red
+    //                    Color.blue
+    //                }
+    //
+    //                Text("Your content")
+    //                    .foregroundStyle(.secondary)
+    //                    .padding(50)
+    //                    .background(.ultraThinMaterial)
+    //            }
+    //        }
+    //        .background(.red)
+    //        .padding()
+    //        .ignoresSafeArea()
+    
+    func flagTapped(_ number: Int) {
+        scoreTitle = number == correctAnswer ? "Correct" : "Wrong"
+        showingScore = true
+    }
+    
+    mutating func generateQuestion() {
+        countries.shuffle()
+        correctAnswer = Int.random(in: 0..<3)
     }
 }
 
