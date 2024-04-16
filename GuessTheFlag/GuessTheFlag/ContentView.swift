@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct ContentView: View {
-    var countries = ["Estonia", "France", "Germany", "Ireland", "Italy", "Nigeria", "Poland", "Spain", "UK", "Ukraine", "US"].shuffled()
-    var correctAnswer = Int.random(in: 0...2)
+    @State private var countries = ["Estonia", "France", "Germany", "Ireland", "Italy", "Nigeria", "Poland", "Spain", "UK", "Ukraine", "US"].shuffled()
+    @State private var correctAnswer = Int.random(in: 0...2)
     
     @State private var showingScore = false
     @State private var scoreTitle = ""
@@ -33,6 +33,13 @@ struct ContentView: View {
                     }
                 }
             }
+        }
+        .alert(scoreTitle, isPresented: $showingScore) {
+            Button("Continue") {
+                generateQuestion()
+            }
+        } message: {
+            Text("Your score is ???")
         }
     }
     
@@ -64,7 +71,7 @@ struct ContentView: View {
         showingScore = true
     }
     
-    mutating func generateQuestion() {
+    func generateQuestion() {
         countries.shuffle()
         correctAnswer = Int.random(in: 0..<3)
     }
