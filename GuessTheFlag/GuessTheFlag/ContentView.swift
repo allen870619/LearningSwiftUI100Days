@@ -35,9 +35,7 @@ struct ContentView: View {
             }
         }
         .alert(scoreTitle, isPresented: $showingScore) {
-            Button("Continue") {
-                generateQuestion()
-            }
+            Button("Continue", action: generateQuestion)
         } message: {
             Text("Your score is ???")
         }
