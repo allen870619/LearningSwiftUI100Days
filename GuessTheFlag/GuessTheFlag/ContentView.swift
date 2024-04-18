@@ -11,8 +11,13 @@ struct ContentView: View {
     @State private var countries = ["Estonia", "France", "Germany", "Ireland", "Italy", "Nigeria", "Poland", "Spain", "UK", "Ukraine", "US"].shuffled()
     @State private var correctAnswer = Int.random(in: 0...2)
     
-    @State private var showingScore = false
-    @State private var scoreTitle = ""
+    @State private var isAlertPresented = false
+    @State private var alertTitle = ""
+    @State private var alertMessage = ""
+    @State private var score = 0
+    @State private var questionCount = 0
+    @State private var isWrongAnswer = false
+    private let totalQuestion = 8
     
     var body: some View {
         ZStack {
@@ -57,17 +62,24 @@ struct ContentView: View {
                 Spacer()
                 Spacer()
                 
-                Text("Score is ???")
+                Text("Score is \(score)")
                     .frame(maxWidth: .infinity)
                     .foregroundColor(.white)
                     .font(.title.bold())
                 Spacer()
             }
         }
-        .alert(scoreTitle, isPresented: $showingScore) {
-            Button("Continue", action: generateQuestion)
+        .alert(alertTitle, isPresented: $isAlertPresented) {
+            Button("Continue") {
+                if isWrongAnswer {
+                    isWrongAnswer = false
+                    generateQuestion()
+                } else {
+                    resetGame()
+                }
+            }
         } message: {
-            Text("Your score is ???")
+            Text(alertMessage)
         }
     }
     
@@ -95,13 +107,35 @@ struct ContentView: View {
     //        .ignoresSafeArea()
     
     func flagTapped(_ number: Int) {
-        scoreTitle = number == correctAnswer ? "Correct" : "Wrong"
-        showingScore = true
+        questionCount += 1
+        if correctAnswer == number {
+            score += 1
+        } else {
+            isWrongAnswer = true
+        }
+        
+        if questionCount == totalQuestion  {
+            alertTitle = "Your score is \(score)"
+            alertMessage = "Press to restart a new game"
+            isAlertPresented = true
+        } else if isWrongAnswer {
+            alertTitle = "Wrong"
+            alertMessage = "Wrong! That’s the flag of \(countries[number])"
+            isAlertPresented = true
+        } else  {
+            generateQuestion()
+        }
     }
     
     func generateQuestion() {
         countries.shuffle()
         correctAnswer = Int.random(in: 0..<3)
+    }
+    
+    func resetGame() {
+        questionCount = 0
+        score = 0
+        generateQuestion()
     }
 }
 
